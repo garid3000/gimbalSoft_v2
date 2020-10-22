@@ -1,0 +1,5 @@
+from sympy import *
+nir, x, r, t = symbols('x y z t')
+expr = sin(sqrt(x**2 + 20)) + 1
+preview(expr, viewer='file', filename='output.png')
+pprint(((nir - r)/(nir + x)), use_unicode=False)

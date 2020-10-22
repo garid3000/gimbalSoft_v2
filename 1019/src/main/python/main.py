@@ -142,9 +142,10 @@ if __name__ == '__main__':
 		params = ' '.join([script] + sys.argv[1:] + [ASADMIN])
 		import platform 
 		if platform.system() == 'Windows':
-			import win32com.shell.shell as shell
-			shell.ShellExecuteEx(lpVerb='runas', lpFile=sys.executable, lpParameters=params)
-			sys.exit(0)
+			# import win32com.shell.shell as shell
+			# shell.ShellExecuteEx(lpVerb='runas', lpFile=sys.executable, lpParameters=params)
+			# sys.exit(0)
+			pass
 		elif platform.system() == 'Linux':
 			pass
 
