@@ -9,8 +9,8 @@ from PyQt5.QtGui import *
 
 from gimbal_tab0  import tab0
 from gimbal_tab1  import tab1
-from gimbal_tab2  import tab2
-from gimbal_tab2_b  import tab2b
+# from gimbal_tab2  import tab2
+from gimbal_tab2_b  import tab2
 from gimbal_tab3  import tab3
 
 ASADMIN = 'asadmin'
@@ -77,8 +77,8 @@ class theCentralWidget(QWidget):
 
 		self.tab0 = tab0()
 		self.tab1 = tab1()
+		# self.tab2 = tab2()
 		self.tab2 = tab2()
-		self.tab2b = tab2b()
 		self.tab3 = tab3()
 		# self.tab0 = QTabWidget()
 		# self.tab1 = QTabWidget()
@@ -86,9 +86,9 @@ class theCentralWidget(QWidget):
 		# self.tab3 = QTabWidget()
 
 		self.mainTABs_widget.addTab(self.tab0, "&Data")
-		self.mainTABs_widget.addTab(self.tab1, "&2D Projection")
-		self.mainTABs_widget.addTab(self.tab2, "&3D Projection")
-		self.mainTABs_widget.addTab(self.tab2b, "&Custom")
+		self.mainTABs_widget.addTab(self.tab1, "&2D RGB Projection")
+		self.mainTABs_widget.addTab(self.tab2, "&Value 2D,3D Projection")
+		# self.mainTABs_widget.addTab(self.tab2b, "&Custom")
 		self.mainTABs_widget.addTab(self.tab3, "&Download")
 
 	def openFileNameDialog(self):
@@ -110,8 +110,8 @@ class theCentralWidget(QWidget):
 			self.tab0.update_indShot_list()			# self.tab0.on_clicked(0)
 			self.tab1.update_this_tab()
 			print('self.tab1.update_this_tab()', self.tab1.dir)
-			self.tab2.reReadData_andDraw()
-			self.tab2b.reReadData_andDraw()
+			# self.tab2.reReadData_andDraw()
+			# self.tab2b.reReadData_andDraw()
 			
 			QMessageBox.information(self,"Directory","Directory has been changed") #changed!
 		else:
@@ -128,8 +128,8 @@ class theCentralWidget(QWidget):
 	def mainTABs_widget_onChange(self):
 		x = self.mainTABs_widget.currentIndex()
 		if x == 2:
-			self.tab2.reReadData_andDraw()
-			self.tab2b.reReadData_andDraw()
+			# self.tab2.reReadData_andDraw()
+			# self.tab2b.reReadData_andDraw()
 			print('changed', x)
 
 			pass

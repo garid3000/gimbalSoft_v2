@@ -1,0 +1,11 @@
+\\
+\mathrm{mask}(\lambda) = \left\{\begin{matrix}
+1,& if\ (\mathrm{Leaf}(\lambda) \geq \mathrm{\underline{\mathbf{LT}}})\ and\ (\mathrm{White}(\lambda)\geq \mathrm{\underline{\mathbf{WT}}})
+\\ 
+0,& else
+\end{matrix}\right.
+\\ \\ \\ 
+Re(\lambda) = \frac{\mathrm{Leaf}(\lambda) - \mathrm{\underline{\mathbf{BG}}}}{\mathrm{White}(\lambda)- \mathrm{\underline{\mathbf{BG}}}}
+\\ \\ \\
+{Re}'(\lambda) = \mathrm{mask}(\lambda)  \cdot Re(\lambda) + (1-\mathrm{mask}(\lambda) ) \cdot (-1)
+
