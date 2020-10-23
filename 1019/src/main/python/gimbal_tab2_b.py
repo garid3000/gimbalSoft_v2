@@ -21,6 +21,9 @@ import subprocess
 import platform
 import random
 import webbrowser
+import sympy as sp
+import pandas as pd
+import numpy as np
 
 
 class MplCanvas(FigureCanvas):
@@ -101,7 +104,10 @@ class tab2(QWidget):
 				['flag', 'prism', 'ocean', 'gist_earth', 'terrain', 'gist_stern',
 				'gnuplot', 'gnuplot2', 'CMRmap', 'cubehelix', 'brg',
 				'gist_rainbow', 'rainbow', 'jet', 'nipy_spectral', 'gist_ncar']
-				}	
+				}
+
+		self.initiaiize_variables()
+
 		self.populate_grp_4_()
 		self.populate_grp_2_()
 		self.populate_grp_3_()
@@ -243,6 +249,7 @@ class tab2(QWidget):
 		self.grp_3_valueshower = QLabel("Index Val:")
 		self.grp_3_shotIDselector= QComboBox()
 		self.grp_3_redrawer = QPushButton("Re-Draw")
+		self.grp_3_redrawer.clicked.connect(self.update_grp_3_shotIDselector_BTN)
 		
 		# self.timer.setInterval(100)
 		# self.timer.timeout.connect(self.update_plot)
@@ -259,6 +266,8 @@ class tab2(QWidget):
 		self.grp_3_layout.setRowStretch(0, 0)
 		self.grp_3_layout.setRowStretch(1, 10)
 		self.grp_3_.setLayout(self.grp_3_layout)
+
+		self.update_grp_3_shotIDselector_combox()
 		pass
 
 
@@ -395,6 +404,9 @@ class tab2(QWidget):
 	def populate_grp_1_tab2sub3(self):
 		self.grp_1_tab2sub3_equationCanvas = MplCanvas2(self, width=2, height=2, dpi=100)
 		self.grp_1_tab2sub3_equationEdit = QLineEdit()
+		self.grp_1_tab2sub3_equationSTRout = QLabel()
+		self.grp_1_tab2sub3_equationSTRout.setFont(QFont('Courier')) 
+
 		# self.grp_1_tab2sub3_equationEdit.textChanged.connect(self.doSomething)
 		self.grp_1_tab2sub3_equationCalcVal = QLineEdit()
 		self.grp_1_tab2sub3_equationCalcBtn = QPushButton(" >> ")
@@ -407,6 +419,7 @@ class tab2(QWidget):
 		self.grp_1_tab2sub3layout.addWidget(self.grp_1_tab2sub3_equationCalcBtn,  1,1)
 		self.grp_1_tab2sub3layout.addWidget(self.grp_1_tab2sub3_equationCalcVal,  1,2)
 		self.grp_1_tab2sub3layout.addWidget(self.grp_1_tab2sub3_equationCanvas,   2,0,1,3)
+		self.grp_1_tab2sub3layout.addWidget(self.grp_1_tab2sub3_equationSTRout,   3,0,1,3)
 		self.grp_1_tab2sub3.setLayout(self.grp_1_tab2sub3layout)
 
 		pass
@@ -572,22 +585,39 @@ class tab2(QWidget):
 	def update_equation(self, str_eq):
 		print('tyrign redraw')
 		try:
-			rc('text', usetex=True)
-			rc('font', family='serif')
-			self.grp_1_tab2sub3_equationCanvas.axes.cla() 
-			c = self.grp_1_tab2sub3_equationCanvas.axes.text(0.0,0.4, '$' + str_eq + '$', fontsize=30) # 
-			self.grp_1_tab2sub3_equationCanvas.axes.axis('off')
-			self.grp_1_tab2sub3_equationCanvas.draw()
+			sp_expr = sp.parse_expr(str_eq)
+			try:
+				rc('text', usetex=True)
+				rc('font', family='serif')
+				self.grp_1_tab2sub3_equationCanvas.axes.cla() 
+				c = self.grp_1_tab2sub3_equationCanvas.axes.text(0.0,0.1, '$' + sp.latex(sp_expr) + '$', fontsize=30) # 
+				self.grp_1_tab2sub3_equationCanvas.axes.axis('off')
+				self.grp_1_tab2sub3_equationCanvas.draw()
 
-			# self.timer.stop()
-			# print("somethign")
-		except :
-			print('errorasdfasdf ahsdfk')
-			# self.timer.stop()
+				# self.timer.stop()
+				# print("somethign")
+			except :
+				print('errorasdfasdf ahsdfk')
+				# self.timer.stop()
+			print(sp.pretty(sp_expr))
+			self.grp_1_tab2sub3_equationSTRout.setText(sp.pretty(sp_expr))
+		except:
+			print("erpr")
 
 	def onChange_grp_1_tabwidget(self):
 		print("somehting changed in onChange_grp_1_tabwidget")
 
+
+	#this should select the id
+	def update_grp_3_shotIDselector_combox(self):
+		self.grp_3_shotIDselector.clear()
+		for i in range(self.numShots):
+			self.grp_3_shotIDselector.addItem(self.meta[i].id)
+	#this shoudl select_the id
+	def update_grp_3_shotIDselector_BTN(self):
+		print(self.grp_3_shotIDselector.currentIndex(),'\t', str(self.grp_3_shotIDselector.currentText()))
+		self.unchangeSelected1shot(self.grp_3_shotIDselector.currentIndex())
+		pass
 
 
 	#add index names to the grp_1_ tab1 (stock indexes)
@@ -602,3 +632,39 @@ class tab2(QWidget):
 		self.grp_1_tab1_cbox_stockIndexs.addItem("Index 8")
 		self.grp_1_tab1_cbox_stockIndexs.addItem("Index 9")
 		self.grp_1_tab1_cbox_stockIndexs.addItem("Index 10")
+
+	def initiaiize_variables(self):
+		self.selectedSHOT = {
+			"selected_1shot_id"      : 0,
+			"selected_1shot_Leaf"    : np.zeros((280,1)),
+			"selected_1shot_White"   : np.zeros((280,1)),
+			"selected_1shot_WL"      : np.zeros((280,1)),
+			"selected_1shot_RawRE"   : np.zeros((280,1)),
+			"selected_1shot_pitch"   : 0,
+			"selected_1shot_azimuth" : 0,
+			"selected_1shot_roll"    : 0,
+			"selected_1shot_calcV"   : 0,
+			"selected_1shot_uncalcV" : 0
+		}
+
+	def unchangeSelected1shot(self, n):
+		if (n < self.numShots):
+			self.selectedSHOT['selected_1shot_id'] = n
+			print(self.meta[n].full_dir)
+			tmpSelected1shotsNPY= np.array(pd.read_csv(self.meta[n].full_dir))
+			# print(tmpSelected1shotsNPY.shape)
+			self.selectedSHOT['selected_1shot_WL']    = tmpSelected1shotsNPY[:,1]
+			self.selectedSHOT['selected_1shot_Leaf']  = tmpSelected1shotsNPY[:,6]
+			self.selectedSHOT['selected_1shot_White'] = tmpSelected1shotsNPY[:,5]
+			self.selectedSHOT['selected_1shot_RawRE'] = tmpSelected1shotsNPY[:,9]
+
+			self.selectedSHOT['selected_1shot_pitch']   = self.meta[n].jsonDic['Pitch']
+			self.selectedSHOT['selected_1shot_azimuth'] = self.meta[n].jsonDic['Azimuth']
+			self.selectedSHOT['selected_1shot_roll']    = self.meta[n].jsonDic['Roll']
+
+			# self.Azimuth[i] = np.array(self.meta[i].jsonDic['Azimuth'])
+			# self.pitch[i]   = np.array(self.meta[i].jsonDic['Pitch'])
+		else:
+			print("ids in the set is not enough")
+			pass
+
