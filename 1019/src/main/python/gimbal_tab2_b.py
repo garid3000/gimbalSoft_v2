@@ -587,12 +587,24 @@ class tab2(QWidget):
 		try:
 			sp_expr = sp.parse_expr(str_eq)
 			try:
-				rc('text', usetex=True)
-				rc('font', family='serif')
-				self.grp_1_tab2sub3_equationCanvas.axes.cla() 
-				c = self.grp_1_tab2sub3_equationCanvas.axes.text(0.0,0.1, '$' + sp.latex(sp_expr) + '$', fontsize=30) # 
-				self.grp_1_tab2sub3_equationCanvas.axes.axis('off')
-				self.grp_1_tab2sub3_equationCanvas.draw()
+				
+				rc('font', family='sans')
+				try:
+					rc('text', usetex=True)
+					rc('font', family='serif')
+					self.grp_1_tab2sub3_equationCanvas.axes.cla() 
+					c = self.grp_1_tab2sub3_equationCanvas.axes.text(0.0,0.1, '$' + sp.latex(sp_expr) + '$', fontsize=30) # 
+					self.grp_1_tab2sub3_equationCanvas.axes.axis('off')
+					self.grp_1_tab2sub3_equationCanvas.draw()
+					pass
+				except:
+					rc('text', usetex=False)
+					# rc('font', family='monospace')
+					print("there is no latex on system")
+					self.grp_1_tab2sub3_equationCanvas.axes.cla() 
+					c = self.grp_1_tab2sub3_equationCanvas.axes.text(0.0,0.1, '$' + sp.latex(sp_expr) + '$', fontsize=30) # 
+					self.grp_1_tab2sub3_equationCanvas.axes.axis('off')
+					self.grp_1_tab2sub3_equationCanvas.draw()
 
 				# self.timer.stop()
 				# print("somethign")
