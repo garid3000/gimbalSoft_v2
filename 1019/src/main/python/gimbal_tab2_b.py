@@ -66,7 +66,7 @@ class tab2(QWidget):
 		appctxt	 = ApplicationContext()
 		self.logsDir = appctxt.get_resource('_logs_/lastDir.tmp')		
 		self.imgsDir = appctxt.get_resource('_imgs_')
-		self.imgsDir_grp4tab2sub1_img = appctxt.get_resource('_imgs_/preSpectrum.png')
+		self.imgsDir_grp_1_tab2sub1_img = appctxt.get_resource('_imgs_/preSpectrum.png')
 		self._4_3d_ = appctxt.get_resource('_4_3d_/4_3dViEW.py')
 		self._helperData = appctxt.get_resource('_4_3d_/3dViewHelper.dat')
 		
@@ -102,17 +102,17 @@ class tab2(QWidget):
 				'gnuplot', 'gnuplot2', 'CMRmap', 'cubehelix', 'brg',
 				'gist_rainbow', 'rainbow', 'jet', 'nipy_spectral', 'gist_ncar']
 				}	
-		self.populate_grp1()
-		self.populate_grp2()
-		self.populate_grp3()
-		self.populate_grp4()
+		self.populate_grp_4_()
+		self.populate_grp_2_()
+		self.populate_grp_3_()
+		self.populate_grp_1_()
 
 		self.layout = QGridLayout()
 		# self.layout.addWidget(self.grp0    ,0,0,2,1)
-		self.layout.addWidget(self.grp4    ,0,0,1,3)
-		self.layout.addWidget(self.grp2    ,1,0,1,1)
-		self.layout.addWidget(self.grp3    ,1,1,1,1)
-		self.layout.addWidget(self.grp1    ,1,2,1,1)
+		self.layout.addWidget(self.grp_1_    ,0,0,1,3)
+		self.layout.addWidget(self.grp_2_    ,1,0,1,1)
+		self.layout.addWidget(self.grp_3_    ,1,1,1,1)
+		self.layout.addWidget(self.grp_4_    ,1,2,1,1)
 
 		self.layout.setColumnStretch(0, 0)
 		self.layout.setColumnStretch(1, 10)
@@ -151,14 +151,18 @@ class tab2(QWidget):
 		self.ndvi = self.ndviAll[:,0]
 
 
-	def populate_grp1(self):
-		self.grp1 = QGroupBox("2D Value Distribution")
-		self.grp1layout = QGridLayout()
+	def populate_grp_4_(self):
+		self.grp_4_ = QGroupBox("2D Value Distribution")
+		self.grp_4_layout = QGridLayout()
 
 		self.canvas = MplCanvas(self, width=2, height=2, dpi=100)
 		self.timer = QTimer()
 		self.update_plot()
 		self.show()	
+
+
+		self.grp_4_redrawer_btn = QPushButton("Re-Draw")
+		self.grp_4_3dDricet_btn = QPushButton("Direct to 3D")
 		
 		# self.timer.setInterval(100)
 		# self.timer.timeout.connect(self.update_plot)
@@ -166,16 +170,18 @@ class tab2(QWidget):
 
 
 		# self.grp0layout.addWidget(self.projectedIcons,  0,0,3,1)
-		self.grp1layout.addWidget(QLabel("2D plane"),    0,0,1,1)
-		self.grp1layout.addWidget(self.canvas, 		     1,0,1,1)
+		self.grp_4_layout.addWidget(QLabel("2D plane"),    0,0,1,2)
+		self.grp_4_layout.addWidget(self.canvas, 		     1,0,1,2)
+		self.grp_4_layout.addWidget(self.grp_4_redrawer_btn, 2,0,1,1)
+		self.grp_4_layout.addWidget(self.grp_4_3dDricet_btn, 2,1,1,1)
 
-		self.grp1layout.setRowStretch(0, 0)
-		self.grp1layout.setRowStretch(1, 10)
-		self.grp1.setLayout(self.grp1layout)
-	def populate_grp2(self):
+		self.grp_4_layout.setRowStretch(0, 0)
+		self.grp_4_layout.setRowStretch(1, 10)
+		self.grp_4_.setLayout(self.grp_4_layout)
+	def populate_grp_2_(self):
 
-		self.grp2 = QGroupBox("Value Color Control Panel")
-		self.grp2layout = QGridLayout()
+		self.grp_2_ = QGroupBox("Value Color Control Panel")
+		self.grp_2_layout = QGridLayout()
 
 		self.indexMaxVal = 1
 		self.indexMinVal = 0
@@ -203,39 +209,40 @@ class tab2(QWidget):
 		# self.refmaxminbtn.clicked.connect(self.refmaxminbtnCLK)
 		self.seemore_aboutcmap = QPushButton("About Colormaps")
 		# self.seemore_aboutcmap.clicked.connect(self.seemore_aboutcmap_clik)
-		self.grp2layout.addWidget(QLabel("Max value:"),    	0,0,1,1)#, alignment=Qt.AlignTop)
-		self.grp2layout.addWidget(self.index_maxLE,    		0,1,1,1)#, alignment=Qt.AlignTop)
-		self.grp2layout.addWidget(QLabel("Min value:"),    	1,0,1,1)#, alignment=Qt.AlignTop)
-		self.grp2layout.addWidget(self.index_minLE,    		1,1,1,1)#, alignment=Qt.AlignTop)
-		self.grp2layout.addWidget(self.refmaxminbtn,		3,1,1,1)#, alignment=Qt.AlignTop)
-		# self.grp2layout.addWidget(self.comboIndex,		    2,1,1,1)#, alignment=Qt.AlignTop)
-		self.grp2layout.addWidget(self.comboIndexGroup,		2,0,1,1)#, alignment=Qt.AlignTop)
-		self.grp2layout.addWidget(self.comboColormap,		2,1,1,1)#, alignment=Qt.AlignTop)
-		self.grp2layout.addWidget(self.seemore_aboutcmap,	3,0,1,1)
-		# self.grp2layout.addWidget(QLabel("Custom equation"),4,1,1,3)
-		# self.grp2layout.addWidget(self.CustomEquation,      5,0,1,3)
+		self.grp_2_layout.addWidget(QLabel("Max value:"),    	0,0,1,1)#, alignment=Qt.AlignTop)
+		self.grp_2_layout.addWidget(self.index_maxLE,    		0,1,1,1)#, alignment=Qt.AlignTop)
+		self.grp_2_layout.addWidget(QLabel("Min value:"),    	1,0,1,1)#, alignment=Qt.AlignTop)
+		self.grp_2_layout.addWidget(self.index_minLE,    		1,1,1,1)#, alignment=Qt.AlignTop)
+		self.grp_2_layout.addWidget(self.refmaxminbtn,		3,1,1,1)#, alignment=Qt.AlignTop)
+		# self.grp_2_layout.addWidget(self.comboIndex,		    2,1,1,1)#, alignment=Qt.AlignTop)
+		self.grp_2_layout.addWidget(self.comboIndexGroup,		2,0,1,1)#, alignment=Qt.AlignTop)
+		self.grp_2_layout.addWidget(self.comboColormap,		2,1,1,1)#, alignment=Qt.AlignTop)
+		self.grp_2_layout.addWidget(self.seemore_aboutcmap,	3,0,1,1)
+		# self.grp_2_layout.addWidget(QLabel("Custom equation"),4,1,1,3)
+		# self.grp_2_layout.addWidget(self.CustomEquation,      5,0,1,3)
 
 
-		self.grp2layout.setRowStretch(0, 1)
-		self.grp2layout.setRowStretch(1, 1)
-		self.grp2layout.setRowStretch(2, 1)
-		self.grp2layout.setRowStretch(3, 1)
-		self.grp2layout.setRowStretch(4, 1)
+		self.grp_2_layout.setRowStretch(0, 1)
+		self.grp_2_layout.setRowStretch(1, 1)
+		self.grp_2_layout.setRowStretch(2, 1)
+		self.grp_2_layout.setRowStretch(3, 1)
+		self.grp_2_layout.setRowStretch(4, 1)
 
 
-		self.grp2.setLayout(self.grp2layout)
+		self.grp_2_.setLayout(self.grp_2_layout)
 		pass
-	def populate_grp3(self):
-		self.grp3 = QGroupBox("Single")
-		self.grp3layout = QGridLayout()
+	def populate_grp_3_(self):
+		self.grp_3_ = QGroupBox("Single")
+		self.grp_3_layout = QGridLayout()
 
 		self.canvas_single = MplCanvasB(self, width=2, height=2, dpi=100)
 		self.timer = QTimer()
 		self.update_plot_single()
 		self.show()	
 
-		self.grp3valueshower = QLabel("Index Val:")
-		self.grp3shotIDselector= QComboBox()
+		self.grp_3_valueshower = QLabel("Index Val:")
+		self.grp_3_shotIDselector= QComboBox()
+		self.grp_3_redrawer = QPushButton("Re-Draw")
 		
 		# self.timer.setInterval(100)
 		# self.timer.timeout.connect(self.update_plot)
@@ -243,193 +250,179 @@ class tab2(QWidget):
 
 
 		# self.grp0layout.addWidget(self.projectedIcons,  0,0,3,1)
-		# self.grp3layout.addWidget(QLabel("2D plane"),      0,0,1,1)
-		self.grp3layout.addWidget(self.canvas_single, 	   0,0,1,2)
-		self.grp3layout.addWidget(self.grp3shotIDselector, 1,0,1,1)
-		self.grp3layout.addWidget(self.grp3valueshower,    1,1,1,1)
+		# self.grp_3_layout.addWidget(QLabel("2D plane"),      0,0,1,1)
+		self.grp_3_layout.addWidget(self.canvas_single, 	   0,0,1,3)
+		self.grp_3_layout.addWidget(self.grp_3_shotIDselector, 1,0,1,1)
+		self.grp_3_layout.addWidget(self.grp_3_valueshower,    1,1,1,1)
+		self.grp_3_layout.addWidget(self.grp_3_redrawer,       1,2,1,1)
 
-		self.grp3layout.setRowStretch(0, 0)
-		self.grp3layout.setRowStretch(1, 10)
-		self.grp3.setLayout(self.grp3layout)
+		self.grp_3_layout.setRowStretch(0, 0)
+		self.grp_3_layout.setRowStretch(1, 10)
+		self.grp_3_.setLayout(self.grp_3_layout)
 		pass
 
 
-	def populate_grp4(self):
-		self.grp4tabwidget = QTabWidget()
-		self.grp4tabwidget.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Ignored)
-		self.grp4tabwidget.currentChanged.connect(self.onChange_grp4tabwidget)
+	def populate_grp_1_(self):
+		self.grp_1_tabwidget = QTabWidget()
+		self.grp_1_tabwidget.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Ignored)
+		self.grp_1_tabwidget.currentChanged.connect(self.onChange_grp_1_tabwidget)
 
-		self.populate_grp4_tab1()
-		self.populate_grp4_tab2()
+		self.populate_grp_1__tab1()
+		self.populate_grp_1__tab2()
 
-		self.grp4tabwidget.addTab(self.grp4tab1,"Index selector")
-		self.grp4tabwidget.addTab(self.grp4tab2,"Index creator")
+		self.grp_1_tabwidget.addTab(self.grp_1_tab1,"Index selector")
+		self.grp_1_tabwidget.addTab(self.grp_1_tab2,"Index creator")
 
 
-		self.grp4 = QGroupBox("Index selector/creator")
-		self.grp4layout = QGridLayout()
-		self.grp4layout.addWidget(self.grp4tabwidget, 	 0,0,1,1)
-		self.grp4.setLayout(self.grp4layout)
+		self.grp_1_ = QGroupBox("Index selector/creator")
+		self.grp_1_layout = QGridLayout()
+		self.grp_1_layout.addWidget(self.grp_1_tabwidget, 	 0,0,1,1)
+		self.grp_1_.setLayout(self.grp_1_layout)
 		pass
+	def populate_grp_1__tab1(self):
+		self.grp_1_tab1 = QWidget()
 
-	def populate_grp4_tab1(self):
-		self.grp4tab1 = QWidget()
-
-		self.grp4tab1_cbox_stockIndexs = QComboBox()
-		self.grp4tab1_cbox_stockIndexs_init()
-		self.grp4tab1_tableWidget = QTableWidget() 
-		self.grp4tab1_create_tableWidge()
-
+		self.grp_1_tab1_cbox_stockIndexs = QComboBox()
+		self.grp_1_tab1_cbox_stockIndexs_init()
+		self.grp_1_tab1_tableWidget = QTableWidget() 
+		self.grp_1_tab1_create_tableWidge()
 
 
 
-		self.grp4tab1_lbl_stockIndexs_val = QLabel("Index val:     ")
+
+		self.grp_1_tab1_lbl_stockIndexs_val = QLabel("Index val:     ")
 
 
-		self.grp4tab1.layout = QGridLayout(self)
-		self.grp4tab1.layout.addWidget(self.grp4tab1_cbox_stockIndexs,      0,0)
-		self.grp4tab1.layout.addWidget(self.grp4tab1_tableWidget,	        0,1,2,1)
-		self.grp4tab1.layout.addWidget(self.grp4tab1_lbl_stockIndexs_val,	1,0)
-		self.grp4tab1.setLayout(self.grp4tab1.layout)
+		self.grp_1_tab1.layout = QGridLayout(self)
+		self.grp_1_tab1.layout.addWidget(self.grp_1_tab1_cbox_stockIndexs,      0,0)
+		self.grp_1_tab1.layout.addWidget(self.grp_1_tab1_tableWidget,	        0,1,2,1)
+		self.grp_1_tab1.layout.addWidget(self.grp_1_tab1_lbl_stockIndexs_val,	1,0)
+		self.grp_1_tab1.setLayout(self.grp_1_tab1.layout)
 
 
-		# self.grp1layout.setColumnStretch(0, 10)
-		# self.grp1layout.setColumnStretch(1, 0)
+		# self.grp_4_layout.setColumnStretch(0, 10)
+		# self.grp_4_layout.setColumnStretch(1, 0)
 		pass
-
-	def grp4tab1_create_tableWidge(self): 
+	def grp_1_tab1_create_tableWidge(self): 
 
 		#Row count 
-		self.grp4tab1_tableWidget.setRowCount(9)  
+		self.grp_1_tab1_tableWidget.setRowCount(9)  
 
 		#Column count 
-		self.grp4tab1_tableWidget.setColumnCount(2)   
+		self.grp_1_tab1_tableWidget.setColumnCount(2)   
 
-		self.grp4tab1_tableWidget.setItem(0,0, QTableWidgetItem("Name")) 
-		self.grp4tab1_tableWidget.setItem(0,1, QTableWidgetItem("Value")) 
-		self.grp4tab1_tableWidget.setItem(1,0, QTableWidgetItem("NDVI")) 
-		self.grp4tab1_tableWidget.setItem(2,0, QTableWidgetItem("Index 2")) 
-		self.grp4tab1_tableWidget.setItem(3,0, QTableWidgetItem("Index 3")) 
-		self.grp4tab1_tableWidget.setItem(4,0, QTableWidgetItem("Index 4")) 
-		self.grp4tab1_tableWidget.setItem(5,0, QTableWidgetItem("Index 5")) 
-		self.grp4tab1_tableWidget.setItem(6,0, QTableWidgetItem("Index 6")) 
-		self.grp4tab1_tableWidget.setItem(7,0, QTableWidgetItem("Index 7")) 
-		self.grp4tab1_tableWidget.setItem(8,0, QTableWidgetItem("Index 8")) 
-		self.grp4tab1_tableWidget.setItem(9,0, QTableWidgetItem("Index 9")) 
-		self.grp4tab1_tableWidget.setItem(10,0, QTableWidgetItem("Index 10")) 
+		self.grp_1_tab1_tableWidget.setItem(0,0, QTableWidgetItem("Name")) 
+		self.grp_1_tab1_tableWidget.setItem(0,1, QTableWidgetItem("Value")) 
+		self.grp_1_tab1_tableWidget.setItem(1,0, QTableWidgetItem("NDVI")) 
+		self.grp_1_tab1_tableWidget.setItem(2,0, QTableWidgetItem("Index 2")) 
+		self.grp_1_tab1_tableWidget.setItem(3,0, QTableWidgetItem("Index 3")) 
+		self.grp_1_tab1_tableWidget.setItem(4,0, QTableWidgetItem("Index 4")) 
+		self.grp_1_tab1_tableWidget.setItem(5,0, QTableWidgetItem("Index 5")) 
+		self.grp_1_tab1_tableWidget.setItem(6,0, QTableWidgetItem("Index 6")) 
+		self.grp_1_tab1_tableWidget.setItem(7,0, QTableWidgetItem("Index 7")) 
+		self.grp_1_tab1_tableWidget.setItem(8,0, QTableWidgetItem("Index 8")) 
+		self.grp_1_tab1_tableWidget.setItem(9,0, QTableWidgetItem("Index 9")) 
+		self.grp_1_tab1_tableWidget.setItem(10,0, QTableWidgetItem("Index 10")) 
 		
-		self.grp4tab1_tableWidget.horizontalHeader().setStretchLastSection(True) 
-		self.grp4tab1_tableWidget.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch) 
-		self.grp4tab1_tableWidget.setEditTriggers(QAbstractItemView.NoEditTriggers)
-	def populate_grp4_tab2(self):
-		self.grp4tab2 = QWidget()
+		self.grp_1_tab1_tableWidget.horizontalHeader().setStretchLastSection(True) 
+		self.grp_1_tab1_tableWidget.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch) 
+		self.grp_1_tab1_tableWidget.setEditTriggers(QAbstractItemView.NoEditTriggers)
+	def populate_grp_1__tab2(self):
+		self.grp_1_tab2 = QWidget()
 
 
-		self.grp4tab2sub1 = QGroupBox("Spectrum Adjustment")
-		self.grp4tab2sub2 = QGroupBox("Variable(Band) Editor")
-		self.grp4tab2sub3 = QGroupBox("Equation creator")
-		self.populate_grp4tab2sub1()
-		self.populate_grp4tab2sub2()
-		self.populate_grp4tab2sub3()
+		self.grp_1_tab2sub1 = QGroupBox("Spectrum Adjustment")
+		self.grp_1_tab2sub2 = QGroupBox("Variable(Band) Editor")
+		self.grp_1_tab2sub3 = QGroupBox("Equation creator")
+		self.populate_grp_1_tab2sub1()
+		self.populate_grp_1_tab2sub2()
+		self.populate_grp_1_tab2sub3()
 
-		self.grp4tab2.layout = QGridLayout(self)
-		self.grp4tab2.layout.addWidget(self.grp4tab2sub1, 0,1)
-		self.grp4tab2.layout.addWidget(self.grp4tab2sub2, 0,2)
-		self.grp4tab2.layout.addWidget(self.grp4tab2sub3, 0,3)
-		self.grp4tab2.setLayout(self.grp4tab2.layout)
+		self.grp_1_tab2.layout = QGridLayout(self)
+		self.grp_1_tab2.layout.addWidget(self.grp_1_tab2sub1, 0,1)
+		self.grp_1_tab2.layout.addWidget(self.grp_1_tab2sub2, 0,2)
+		self.grp_1_tab2.layout.addWidget(self.grp_1_tab2sub3, 0,3)
+		self.grp_1_tab2.setLayout(self.grp_1_tab2.layout)
 		pass
 
-	def populate_grp4tab2sub1(self):
-		self.grp4tab2sub1_leafThreshold = QLineEdit()
-		self.grp4tab2sub1_whitThreshold = QLineEdit()
-		self.grp4tab2sub1_BG = QLineEdit()
-		self.grp4tab2sub1_leafThreshold.setValidator( QDoubleValidator(0, 255, 8) )
-		self.grp4tab2sub1_whitThreshold.setValidator( QDoubleValidator(0, 255, 8) )
-		self.grp4tab2sub1_BG.setValidator( QDoubleValidator(0, 16, 8) )
-		self.grp4tab2sub1_canvas = MplCanvas1(self, width=2, height=2, dpi=100)
-		self.grp4tab2sub1_calc = QPushButton("1. Calculate ⬇")
+	def populate_grp_1_tab2sub1(self):
+		self.grp_1_tab2sub1_leafThreshold = QLineEdit()
+		self.grp_1_tab2sub1_whitThreshold = QLineEdit()
+		self.grp_1_tab2sub1_BG = QLineEdit()
+		self.grp_1_tab2sub1_leafThreshold.setValidator( QDoubleValidator(0, 255, 8) )
+		self.grp_1_tab2sub1_whitThreshold.setValidator( QDoubleValidator(0, 255, 8) )
+		self.grp_1_tab2sub1_BG.setValidator( QDoubleValidator(0, 16, 8) )
+		self.grp_1_tab2sub1_canvas = MplCanvas1(self, width=2, height=2, dpi=100)
+		self.grp_1_tab2sub1_calc = QPushButton("1. Calculate ⬇")
 
-		self.grp4tab2sub1_eqimg = QLabel(self)
-		pixmap = QPixmap(self.imgsDir_grp4tab2sub1_img)
-		self.grp4tab2sub1_eqimg.setPixmap(pixmap) #pixmap.scaledToHeight(200)
+		self.grp_1_tab2sub1_eqimg = QLabel(self)
+		pixmap = QPixmap(self.imgsDir_grp_1_tab2sub1_img)
+		self.grp_1_tab2sub1_eqimg.setPixmap(pixmap) #pixmap.scaledToHeight(200)
 		# self.resize(pixmap.width()/100,pixmap.height()/100)
 
 		# Optional, resize window to image size
 
 
-		self.grp4tab2sub1.layout = QGridLayout(self)
-		self.grp4tab2sub1.layout.addWidget(QLabel('LT: Leaf Threshold'),       0,0)
-		self.grp4tab2sub1.layout.addWidget(self.grp4tab2sub1_leafThreshold,    0,1)
-		self.grp4tab2sub1.layout.addWidget(QLabel('WT: White Threshold'),      1,0)
-		self.grp4tab2sub1.layout.addWidget(self.grp4tab2sub1_whitThreshold,    1,1)
-		self.grp4tab2sub1.layout.addWidget(QLabel('BG value'),                 2,0)
-		self.grp4tab2sub1.layout.addWidget(self.grp4tab2sub1_BG,               2,1)
-		self.grp4tab2sub1.layout.addWidget(self.grp4tab2sub1_calc,             3,1)
+		self.grp_1_tab2sub1.layout = QGridLayout(self)
+		self.grp_1_tab2sub1.layout.addWidget(QLabel('LT: Leaf Threshold'),       0,0)
+		self.grp_1_tab2sub1.layout.addWidget(self.grp_1_tab2sub1_leafThreshold,    0,1)
+		self.grp_1_tab2sub1.layout.addWidget(QLabel('WT: White Threshold'),      1,0)
+		self.grp_1_tab2sub1.layout.addWidget(self.grp_1_tab2sub1_whitThreshold,    1,1)
+		self.grp_1_tab2sub1.layout.addWidget(QLabel('BG value'),                 2,0)
+		self.grp_1_tab2sub1.layout.addWidget(self.grp_1_tab2sub1_BG,               2,1)
+		self.grp_1_tab2sub1.layout.addWidget(self.grp_1_tab2sub1_calc,             3,1)
 
-		self.grp4tab2sub1.layout.addWidget(self.grp4tab2sub1_eqimg,            0,2,4,1)
-		self.grp4tab2sub1.layout.addWidget(self.grp4tab2sub1_canvas,	       4,0,1,3)
-		# self.grp4tab2sub1.layout.addWidget(QLabel('2'),       0,1,2,1)
-		# self.grp4tab2sub1.layout.addWidget(QLabel('3'),		  1,0)
-		self.grp4tab2sub1.setLayout(self.grp4tab2sub1.layout)
+		self.grp_1_tab2sub1.layout.addWidget(self.grp_1_tab2sub1_eqimg,            0,2,4,1)
+		self.grp_1_tab2sub1.layout.addWidget(self.grp_1_tab2sub1_canvas,	       4,0,1,3)
+		# self.grp_1_tab2sub1.layout.addWidget(QLabel('2'),       0,1,2,1)
+		# self.grp_1_tab2sub1.layout.addWidget(QLabel('3'),		  1,0)
+		self.grp_1_tab2sub1.setLayout(self.grp_1_tab2sub1.layout)
 		pass
-	def populate_grp4tab2sub2(self):
-		self.grp4tab2_tableWidgetVar = QTableWidget()
-		self.grp4tab2_create_tableWidgetVar()
+	def populate_grp_1_tab2sub2(self):
+		self.grp_1_tab2_tableWidgetVar = QTableWidget()
+		self.grp_1_tab2_create_tableWidgetVar()
+		self.grp_1_tab2sub2_calcBtn = QPushButton("2. Calculate ⬇")
 
-		# self.grp4tab2_tableWidgetVal = QTableWidget()
-		# self.grp4tab2_create_tableWidgetVal()
-
-		self.grp4tab2sub2layout = QGridLayout(self)
-		self.grp4tab2sub2layout.addWidget(self.grp4tab2_tableWidgetVar,     0,0)
-		# self.grp4tab2sub2layout.addWidget(self.grp4tab2_tableWidgetVal,     0,1)
-		# self.grp4tab2sub2layout.setColumnStretch(0, 10)
-		# self.grp4tab2sub2layout.setColumnStretch(1, 0)
-		self.grp4tab2sub2.setLayout(self.grp4tab2sub2layout)
-
+		self.grp_1_tab2sub2layout = QGridLayout(self)
+		self.grp_1_tab2sub2layout.addWidget(self.grp_1_tab2_tableWidgetVar,     1,0)
+		self.grp_1_tab2sub2layout.addWidget(self.grp_1_tab2sub2_calcBtn,        0,0)
+		# self.grp_1_tab2sub2layout.addWidget(self.grp_1_tab2_tableWidgetVal,     0,1)
+		# self.grp_1_tab2sub2layout.setColumnStretch(0, 10)
+		# self.grp_1_tab2sub2layout.setColumnStretch(1, 0)
+		self.grp_1_tab2sub2.setLayout(self.grp_1_tab2sub2layout)
 
 
-	def populate_grp4tab2sub3(self):
-		self.grp4tab2sub3_equationCanvas = MplCanvas2(self, width=2, height=2, dpi=100)
-		self.grp4tab2sub3_equationEdit = QLineEdit()
-		self.grp4tab2sub3_equationEdit.textChanged.connect(self.doSomething)
-		self.grp4tab2sub3_equationCalcVal = QLineEdit()
-		self.grp4tab2sub3_equationCalcBtn = QPushButton(">>")
+	def populate_grp_1_tab2sub3(self):
+		self.grp_1_tab2sub3_equationCanvas = MplCanvas2(self, width=2, height=2, dpi=100)
+		self.grp_1_tab2sub3_equationEdit = QLineEdit()
+		# self.grp_1_tab2sub3_equationEdit.textChanged.connect(self.doSomething)
+		self.grp_1_tab2sub3_equationCalcVal = QLineEdit()
+		self.grp_1_tab2sub3_equationCalcBtn = QPushButton(" >> ")
+		self.grp_1_tab2sub3_equationCalcBtn.clicked.connect(self.g1t2s3calc)
 
 
-		self.grp4tab2sub3layout = QGridLayout(self)
-		self.grp4tab2sub3layout.addWidget(QLabel("Write Equation"),           0,0)
-		self.grp4tab2sub3layout.addWidget(self.grp4tab2sub3_equationEdit,     1,0)
-		self.grp4tab2sub3layout.addWidget(self.grp4tab2sub3_equationCalcBtn,  1,1)
-		self.grp4tab2sub3layout.addWidget(self.grp4tab2sub3_equationCalcVal,  1,2)
-		self.grp4tab2sub3layout.addWidget(self.grp4tab2sub3_equationCanvas,   2,0,1,3)
-		self.grp4tab2sub3.setLayout(self.grp4tab2sub3layout)
+		self.grp_1_tab2sub3layout = QGridLayout(self)
+		self.grp_1_tab2sub3layout.addWidget(QLabel("Write Equation"),           0,0)
+		self.grp_1_tab2sub3layout.addWidget(self.grp_1_tab2sub3_equationEdit,     1,0)
+		self.grp_1_tab2sub3layout.addWidget(self.grp_1_tab2sub3_equationCalcBtn,  1,1)
+		self.grp_1_tab2sub3layout.addWidget(self.grp_1_tab2sub3_equationCalcVal,  1,2)
+		self.grp_1_tab2sub3layout.addWidget(self.grp_1_tab2sub3_equationCanvas,   2,0,1,3)
+		self.grp_1_tab2sub3.setLayout(self.grp_1_tab2sub3layout)
 
 		pass
 
-	def doSomething(self):
-		print("doSomething")
-		print(self.grp4tab2sub3_equationEdit.text())
-		self.update_equation(self.grp4tab2sub3_equationEdit.text())
-
-	def grp4tab2_create_tableWidgetVar(self): 
-		self.grp4tab2_tableWidgetVar.setRowCount(50)
-		self.grp4tab2_tableWidgetVar.setColumnCount(3)   
-		self.grp4tab2_tableWidgetVar.setItem(0,0, QTableWidgetItem("Var Name")) 
-		self.grp4tab2_tableWidgetVar.setItem(0,1, QTableWidgetItem("Expression")) 
-		self.grp4tab2_tableWidgetVar.setItem(0,2, QTableWidgetItem("Value")) 
-		self.grp4tab2_tableWidgetVar.horizontalHeader().setStretchLastSection(True) 
-		self.grp4tab2_tableWidgetVar.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch) 
-
-	# def grp4tab2_create_tableWidgetVal(self): 
-	# 	self.grp4tab2_tableWidgetVal.setRowCount(50)
-	# 	self.grp4tab2_tableWidgetVal.setColumnCount(1)   
-	# 	self.grp4tab2_tableWidgetVal.setItem(0,0, QTableWidgetItem("Var Name")) 
-	# 	self.grp4tab2_tableWidgetVal.setItem(0,1, QTableWidgetItem("Expression")) 
-	# 	self.grp4tab2_tableWidgetVal.setEditTriggers(QAbstractItemView.NoEditTriggers)
-		# self.grp4tab2_tableWidgetVal.horizontalHeader().setStretchLastSection(True) 
-		# self.grp4tab2_tableWidgetVal.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch) 
-
-
+	def g1t2s3calc(self):
+		tmp = self.grp_1_tab2sub3_equationEdit.text()
+		print('g1t2s3calc' + tmp)
+		self.update_equation(tmp)
+	def grp_1_tab2_create_tableWidgetVar(self): 
+		self.grp_1_tab2_tableWidgetVar.setRowCount(50)
+		self.grp_1_tab2_tableWidgetVar.setColumnCount(3)   
+		self.grp_1_tab2_tableWidgetVar.setItem(0,0, QTableWidgetItem("Var Name")) 
+		self.grp_1_tab2_tableWidgetVar.setItem(0,1, QTableWidgetItem("Expression")) 
+		self.grp_1_tab2_tableWidgetVar.setItem(0,2, QTableWidgetItem("Value")) 
+		self.grp_1_tab2_tableWidgetVar.horizontalHeader().setStretchLastSection(True) 
+		self.grp_1_tab2_tableWidgetVar.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch) 
 
 	#this when changeing the colormap FAMILY get changed
 	def on_comboColormapIndexGroup(self):
@@ -440,15 +433,11 @@ class tab2(QWidget):
 		for cmap_name in self.cmapNames[tmpGrpName]:
 			self.comboColormap.addItem(cmap_name)
 
-
-
 	#add initially colormap to the combox
 	def for_initializing_combobox(self):
 		for cmap_category in self.cmapNames:
 			self.comboIndexGroup.addItem(cmap_category)
 
-
-	#read helper file (from the last usage)
 	def readingFile_3dHelper(self):
 		FILE = open(self._helperData, 'r')
 		LinesOfFile = FILE.readlines()
@@ -585,10 +574,10 @@ class tab2(QWidget):
 		try:
 			rc('text', usetex=True)
 			rc('font', family='serif')
-			self.grp4tab2sub3_equationCanvas.axes.cla() 
-			c = self.grp4tab2sub3_equationCanvas.axes.text(0.0,0.4, '$' + str_eq + '$', fontsize=30) # 
-			self.grp4tab2sub3_equationCanvas.axes.axis('off')
-			self.grp4tab2sub3_equationCanvas.draw()
+			self.grp_1_tab2sub3_equationCanvas.axes.cla() 
+			c = self.grp_1_tab2sub3_equationCanvas.axes.text(0.0,0.4, '$' + str_eq + '$', fontsize=30) # 
+			self.grp_1_tab2sub3_equationCanvas.axes.axis('off')
+			self.grp_1_tab2sub3_equationCanvas.draw()
 
 			# self.timer.stop()
 			# print("somethign")
@@ -596,20 +585,20 @@ class tab2(QWidget):
 			print('errorasdfasdf ahsdfk')
 			# self.timer.stop()
 
-	def onChange_grp4tabwidget(self):
-		print("somehting changed in onChange_grp4tabwidget")
+	def onChange_grp_1_tabwidget(self):
+		print("somehting changed in onChange_grp_1_tabwidget")
 
 
 
-	#add index names to the grp4 tab1 (stock indexes)
-	def grp4tab1_cbox_stockIndexs_init(self):
-		self.grp4tab1_cbox_stockIndexs.addItem("Index 1: NDVI")
-		self.grp4tab1_cbox_stockIndexs.addItem("Index 2")
-		self.grp4tab1_cbox_stockIndexs.addItem("Index 3")
-		self.grp4tab1_cbox_stockIndexs.addItem("Index 4")
-		self.grp4tab1_cbox_stockIndexs.addItem("Index 5")
-		self.grp4tab1_cbox_stockIndexs.addItem("Index 6")
-		self.grp4tab1_cbox_stockIndexs.addItem("Index 7")
-		self.grp4tab1_cbox_stockIndexs.addItem("Index 8")
-		self.grp4tab1_cbox_stockIndexs.addItem("Index 9")
-		self.grp4tab1_cbox_stockIndexs.addItem("Index 10")
+	#add index names to the grp_1_ tab1 (stock indexes)
+	def grp_1_tab1_cbox_stockIndexs_init(self):
+		self.grp_1_tab1_cbox_stockIndexs.addItem("Index 1: NDVI")
+		self.grp_1_tab1_cbox_stockIndexs.addItem("Index 2")
+		self.grp_1_tab1_cbox_stockIndexs.addItem("Index 3")
+		self.grp_1_tab1_cbox_stockIndexs.addItem("Index 4")
+		self.grp_1_tab1_cbox_stockIndexs.addItem("Index 5")
+		self.grp_1_tab1_cbox_stockIndexs.addItem("Index 6")
+		self.grp_1_tab1_cbox_stockIndexs.addItem("Index 7")
+		self.grp_1_tab1_cbox_stockIndexs.addItem("Index 8")
+		self.grp_1_tab1_cbox_stockIndexs.addItem("Index 9")
+		self.grp_1_tab1_cbox_stockIndexs.addItem("Index 10")
